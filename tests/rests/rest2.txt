@@ -1,0 +1,52 @@
+
+curl -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-REST-API-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+  -H "X-Parse-Revocable-Session: 1" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"sinenco","password":"malville"}' \
+  http://dev.shared-news.com/parse/users
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+  -d '{ "userId":"qU4Dri4Qng", "name":"Sinenco FR", "description":"Mise à jour de Sinenco", "expireDate":{"__type": "Date", "iso": "2017-06-30T18:02:52.249Z"}  }' \
+  http://prod.shared-news.com/parse/functions/create_service
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+  -d '{ "userId":"qU4Dri4Qng", "name":"Sinenco EN", "description":"Updates of Sinenco", "expireDate":{"__type": "Date", "iso": "2017-06-30T18:02:52.249Z"}  }' \
+  http://prod.shared-news.com/parse/functions/create_service
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -d '{ "userId": "qU4Dri4Qng", "serviceId":"JFDC3i55AA" }' \
+http://localhost:1337/parse/functions/subscribe
+
+
+curl -v -X GET \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+  http://prod.shared-news.com/parse/classes/_User/FeoatkGQGq
+
+curl -v -X GET \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -d '{ "username":"jordan", "password":"malville"  }' \
+  http://dev.shared-news.com/parse/login
+
+curl -X GET \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Revocable-Session: 1" \
+  -G \
+  --data-urlencode 'username=sinenco' \
+  --data-urlencode 'password=malville' \
+  http://dev.shared-news.com/parse/login
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -d '{ "description":"salut", "serviceId":"NoYz6T8MUO"  }' \
+  -H "X-Parse-Session-Token: r:93b72b8ec327fb110d5d0c27efcf1f13" \
+  http://prod.shared-news.com/parse/functions/change_description

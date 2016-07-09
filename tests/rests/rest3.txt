@@ -1,0 +1,11 @@
+curl -v -X GET \
+-H "X-Parse-Application-Id: com.sinenco.sharednews" \
+-H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+http://prod.shared-news.com/parse/classes/Service/6CnHLu6UxX
+
+curl -v -X GET \
+-H "X-Parse-Application-Id: com.sinenco.sharednews" \
+-H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+http://prod.shared-news.com/parse/classes/Message
+
+curl -v -X POST   -H "X-Parse-Application-Id: com.sinenco.sharednews"   -d '{ "description":"salut", "serviceId":"6CnHLu6UxX"  }'   -H "X-Parse-Session-Token: r:fe88d94136f655306453788a8fe97e8f"   http://prod.shared-news.com/parse/functions/change_description

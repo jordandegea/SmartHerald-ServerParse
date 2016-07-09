@@ -1,0 +1,9 @@
+curl -X DELETE   -H "X-Parse-Application-Id: com.sinenco.sharednews"   -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" http://prod.shared-news.com/parse/classes/ServicesOwners/lmtSrZ7M0t
+
+curl -X DELETE   -H "X-Parse-Application-Id: com.sinenco.sharednews"   -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" http://prod.shared-news.com/parse/classes/Service/MDafEsNt8P
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -d '{}' \
+http://localhost:1337/parse/functions/paypal_set_express_checkout

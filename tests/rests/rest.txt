@@ -1,0 +1,99 @@
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -d '{ "userId": "h8sOvM7sOE", "serviceId":"ZelrHnMqbR" }' \
+http://localhost:1337/parse/functions/subscribe
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Session-Token: r:8ffba3ca824708888972a118c3758fe5" \
+  -d '{ "installationId":"Elm6B8QM4K" }' \
+  -H "Content-Type: application/json" \
+http://localhost:1337/parse/functions/update_installation
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -H "X-Parse-Session-Token: r:fe88d94136f655306453788a8fe97e8f" \
+  -d '{ "serviceId":"Ov9DN6Fbeo", "content":"coucou", "summary":"salut" }' \
+  -H "Content-Type: application/json" \
+http://dev.shared-news.com/parse/functions/write_message
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -H "X-Parse-Session-Token: r:041844d55caa438690848968fa484549" \
+  -d '{ "serviceId":"Ov9DN6Fbeo", "content":"coucou", "summary":"salut", "messageId":"2aPcZduucj" }' \
+  -H "Content-Type: application/json" \
+http://dev.shared-news.com/parse/functions/edit_message
+
+curl -v -X GET \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  http://localhost:1337/parse/classes/Service/ZelrHnMqbR
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -H "X-Parse-Session-Token: r:fe88d94136f655306453788a8fe97e8f" \
+  -d '{ "include": "service" }' \
+  -H "Content-Type: application/json" \
+http://dev.shared-news.com/parse/classes/subscription
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -H "X-Parse-Session-Token: r:fe88d94136f655306453788a8fe97e8f" \
+  -d '{ "serviceId":"Ov9DN6Fbeo"}' \
+  -H "Content-Type: application/json" \
+http://dev.shared-news.com/parse/functions/write_message
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+  -H "X-Parse-Session-Token: r:9e72afa910a7f8d447e8550688541027" \
+  -d '{ "serviceId":"Id1cZREb55", "messageId":"KPJ9Dl4EtT"}' \
+  -H "Content-Type: application/json" \
+http://dev.shared-news.com/parse/functions/send
+
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+    -H "Content-Type: application/json" \
+    -d '{
+          "where": {
+            "deviceType": {
+              "$in": [
+                "android"
+              ]
+            }
+          },
+          "data": {
+            "title": "Test Push",
+            "alert": "A cool message for the test."
+          }
+        }'\   http://dev.shared-news.com/parse/push
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+    -H "Content-Type: application/json" \
+    -d '{
+          "where": {
+            "channels": "sinenco_fr",
+            "deviceType": {
+              "$in": [
+                "ios",
+                "android"
+              ]
+            }
+          },
+          "data": {
+            "title": "Test Push",
+            "alert": "A cool message for the test."
+          }
+        }'\   http://dev.shared-news.com/parse/push
