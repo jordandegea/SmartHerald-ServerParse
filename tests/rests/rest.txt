@@ -6,6 +6,12 @@ http://localhost:1337/parse/functions/subscribe
 
 curl -v -X POST \
   -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "Content-Type: application/json" \
+http://localhost:1337/parse/functions/send_test
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
   -H "X-Parse-Session-Token: r:8ffba3ca824708888972a118c3758fe5" \
   -d '{ "installationId":"Elm6B8QM4K" }' \
   -H "Content-Type: application/json" \
@@ -53,7 +59,7 @@ curl -v -X POST \
   -H "X-Parse-Application-Id: com.sinenco.sharednews" \
   -H "Content-Type: application/json" \
   -H "X-Parse-Session-Token: r:9e72afa910a7f8d447e8550688541027" \
-  -d '{ "serviceId":"Id1cZREb55", "messageId":"KPJ9Dl4EtT"}' \
+  -d '{ "serviceId":"JFDC3i55AA", "messageId":"KPJ9Dl4EtT"}' \
   -H "Content-Type: application/json" \
 http://dev.shared-news.com/parse/functions/send
 

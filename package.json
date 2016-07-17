@@ -13,7 +13,13 @@
     "express": "~4.11.x",
     "kerberos": "~0.0.x",
     "parse": "~1.8.0",
-    "parse-server": "~2.2.12"
+    "parse-server": "~2.2.12",
+
+    "apn": "^1.5.2",
+    "node-gcm": "^0.9.11",
+    "c2dm": "^1.2.1",
+    "mpns": "^2.1.0",
+    "wns": "^0.5.3"
   },
   "scripts": {
     "start": "node index.js"
