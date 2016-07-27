@@ -1,4 +1,3 @@
-require('./functions.js');
 
 /**
  * 
@@ -8,6 +7,9 @@ require('./functions.js');
  */
 add_messagesusers = function(serviceConfiguration, value){
     messagesUsers = parseInt(serviceConfiguration.get('messagesUsers')) + value;
-    serviceConfiguration.set('messagesUsers', messagesUsers+"");
+    if ( typeof(messagesUsers) == "string"){
+    	messagesUsers = parseInt(messagesUsers, 10);
+    }
+    serviceConfiguration.set('messagesUsers', messagesUsers);
     return serviceConfiguration.save();
 }

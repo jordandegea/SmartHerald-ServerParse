@@ -3,6 +3,7 @@ create_service = function(user, name, description, messagesUsers){
   if( typeof(name)=='undefined'){throw new Error("missing name");}
   if( typeof(description)=='undefined'){throw new Error("missing description");}
   if( typeof(messagesUsers)=='undefined'){throw new Error("missing messagesUsers");}
+  if( typeof(messagesUsers)=='string'){messagesUsers = parseInt(messagesUsers, 10);}
   
   var service = null;
 
@@ -82,7 +83,6 @@ create_service = function(user, name, description, messagesUsers){
       servicesOwners = new ServicesOwners();
 
       /* Create the service with the role as ACL*/
-
       servicesOwners.set("client", user);
       servicesOwners.set("service", service);
       servicesOwners.set("admin", true);

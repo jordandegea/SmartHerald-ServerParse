@@ -35,9 +35,6 @@ class UserObjectTest{
 		$user->set("password", $name);
 		$user->set("email", $name."@example.com");
 
-		// other fields can be set just like with ParseObject
-		$user->set("phone", "415-392-0202");
-
 		try {
 		  $user->signUp();
 		  // Hooray! Let them use the app now.

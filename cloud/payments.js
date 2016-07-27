@@ -1,7 +1,8 @@
 require('./function.create_service.js');
 require('./function.add_messagesusers.js');
-require('./function.parse_str.js')
-require('./function.paypal.js')
+require('./function.parse_str.js');
+require('./function.paypal.js');
+require('./function.send_email.js');
 
 Parse.Cloud.define("paypal_set_express_checkout", function(request, response) {
 
@@ -53,8 +54,8 @@ Parse.Cloud.define("paypal_set_express_checkout", function(request, response) {
 			    PAYMENTREQUEST_0_PAYMENTACTION:"SALE",
 			    PAYMENTREQUEST_0_AMT:price,
 			    PAYMENTREQUEST_0_CURRENCYCODE:"EUR",
-			    RETURNURL:"http://www.example.com/success.html",
-			    CANCELURL:"http://www.example.com/cancel.html"
+			    RETURNURL:paypal_return_url,
+			    CANCELURL:paypal_return_url
 			  }
 			});
   		}
@@ -149,13 +150,13 @@ Parse.Cloud.define("paiement_check", function(request, response) {
 			service.id = params["serviceId"];
   			return service.fetch(true).then(
   					function(object){
-  						return service.get("configuration").fetch();
-  					}
-  				).then(
-  					function(object){
-  						return add_messagesusers(object, values["messagesusers"]);
-  					}
-  				);
+						return service.get("configuration").fetch();
+					}
+				).then(
+					function(object){
+						return add_messagesusers(object, values["messagesusers"]);
+					}
+				);
 	      }else{
 		      purchase.set("message","unknown type");
 	      }
@@ -172,6 +173,7 @@ Parse.Cloud.define("paiement_check", function(request, response) {
 		},
 		function(error){
 			error_response(request,response, 600, error);
+			send_email("Jordan DE GEA <admin@sinenco.com>", "Jordan DE GEA <admin@mgmail.com>", "Purchase error: "+purchase.get("token"), error.message);
 		}
 	)
 

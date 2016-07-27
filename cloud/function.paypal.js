@@ -7,6 +7,7 @@ paypal_credentials_dev_password = "W7A29LTYLQPFULT2";
 paypal_credentials_dev_signature = "AFcWxV21C7fd0v3bYYYRCpSSRl31AvgQwWdOKycGwX1VyOBS0rTS.IUn";
 paypal_url_sandbox = "https://api-3t.sandbox.paypal.com/nvp";
 paypal_url = "https://api-3t.paypal.com/nvp";
+paypal_return_url = "http://shared-news.com/dashboard/#/payment/complete"
 
 paypal_DoExpressCheckoutPayment = function(sandbox, token, amount, payer_id){
 

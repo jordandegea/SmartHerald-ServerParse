@@ -4,6 +4,13 @@ curl -v -X POST \
   -d '{ "userId": "h8sOvM7sOE", "serviceId":"ZelrHnMqbR" }' \
 http://localhost:1337/parse/functions/subscribe
 
+curl -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.sharednews" \
+  -H "X-Parse-Master-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+  -H "Content-Type: application/json;charset=utf-8" \
+  https://localhost:1337/jobs/userMigration
+
+
 curl -v -X POST \
   -H "X-Parse-Application-Id: com.sinenco.sharednews" \
   -H "Content-Type: application/json" \

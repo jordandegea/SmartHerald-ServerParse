@@ -18,6 +18,12 @@ TestSetup::addService(0, (new \Datetime("now"))->add(new \DateInterval("P2M")), 
 try{
 	UserObjectTest::LoginMustSucceed(TestSetup::getUsername(0));
 
+	$service = TestSetup::getService(0);
+
+	ParseObjectTest::fetchMustSucceed($service, true);
+	$serviceConfiguration = $service->get("configuration");
+	ParseObjectTest::fetchMustSucceed($serviceConfiguration, true);
+
 	$result = ParseCloudTest::runMustSucceed(
 		'add_messagesusers', 
 		[
@@ -31,10 +37,10 @@ try{
 
 	$service = new ParseObject("Service", $serviceId);
 	ParseObjectTest::fetchMustSucceed($service, true);
-	ParseObjectTest::fetchMustSucceed($service->get("configuration"), true);
-
+	ParseObjectTest::fetchMustSucceed($serviceConfiguration, true);
+	
 	//BasicTest::compareMustBeEqual($message->get('service')->getObjectId(), TestSetup::getService(0)->getObjectId());
-	BasicTest::compareMustBeEqual($service->get("configuration")->get('messagesUsers'), 100);
+	BasicTest::compareMustBeEqual($serviceConfiguration->get('messagesUsers'), 100);
 
 	
 	$result = ParseCloudTest::runMustSucceed(
@@ -58,5 +64,6 @@ try{
 
 	UITest::display_result(true, "Add messagesUsers");
 }catch(Exception $e){
+	print_r($e);
 	UITest::display_result(false, "Add messagesUsers", $e);
 }

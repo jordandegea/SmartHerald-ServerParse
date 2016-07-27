@@ -40,7 +40,6 @@ class TestSetup{
 						"userId"=>self::$users[$userId]->getObjectId(),
 						"name"=>$name, 
 					  	"description"=>$description,
-					  	"expireDate"=>$expire,
 					  	"messagesUsers"=>"0"
 					], 
 					true);

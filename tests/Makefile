@@ -16,7 +16,7 @@ php_tests: ${TESTSPHANTOM}
 
 parse_test:
 	mongodb-runner start && \
-	parse-server --appId ${APPLICATION_ID} --masterKey ${MASTER_KEY} --cloud ${CLOUDFOLDER}/main.js --allowClientClassCreation false
+	parse-server --appId ${APPLICATION_ID} --masterKey ${MASTER_KEY} --cloud ${CLOUDFOLDER}/main.js --allowClientClassCreation false --databaseURI "mongodb://localhost/test"
 
 tests/t%: 
 	mongodb-runner start && \

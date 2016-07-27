@@ -1,7 +1,10 @@
+
+// End of Cloud tools
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 
 var path = require('path');
+
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
@@ -9,12 +12,26 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+
+// Tools needed in the CloudFunction 
+
+var nodemailer = require('nodemailer');
+Mail = nodemailer.createTransport({
+    host:'ssl0.ovh.net',
+    port:587,
+    auth: {
+        user: 'webmaster@sinenco.com', 
+        pass: 'bullet4my04'
+    }
+});
+
+// End of Cloud tools
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://aws-user:1A2Z3E4R5T6Y7U8I9O0P@SG-SharedNews-7652.servers.mongodirector.com:27017/production',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'com.sinenco.sharednews',
   masterKey: process.env.MASTER_KEY || 'VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds',
-  allowClientClassCreation: false,
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',
   push: {
       android: {
@@ -32,7 +49,9 @@ var api = new ParseServer({
         bundleId: 'com.sinenco.sharednews',
         production: false
       }]
-    }
+    },
+  allowClientClassCreation: false,
+  sessionLength:1296000 //2 weeks expiration
 });
 
 var app = express();
@@ -47,6 +66,7 @@ app.use('/dashboard', express.static(path.join(__dirname, '/public/dashboard')))
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
+require("./jobs/main.js");
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
