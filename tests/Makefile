@@ -2,7 +2,7 @@
 TESTSIMPORT=$(wildcard tests/t*.php)
 TESTSPHANTOM=$(TESTSIMPORT:%.php=%)
 
-APPLICATION_ID=com.sinenco.sharednews
+APPLICATION_ID=com.sinenco.smartherald
 MASTER_KEY=themasterkey
 INDEX=1
 CLOUDFOLDER=$(shell cd ../cloud/ && pwd)

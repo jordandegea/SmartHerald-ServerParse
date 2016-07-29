@@ -30,7 +30,7 @@ Mail = nodemailer.createTransport({
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://aws-user:1A2Z3E4R5T6Y7U8I9O0P@SG-SharedNews-7652.servers.mongodirector.com:27017/production',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'com.sinenco.sharednews',
+  appId: process.env.APP_ID || 'com.sinenco.smartherald',
   masterKey: process.env.MASTER_KEY || 'VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds',
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',
   push: {
@@ -41,12 +41,12 @@ var api = new ParseServer({
       ios: [{
         pfx: __dirname + '/conf/push/ios/prod.p12',
         passphrase: '', 
-        bundleId: 'com.sinenco.sharednews',
+        bundleId: 'com.sinenco.smartherald',
         production: true
       },{
         pfx: __dirname + '/conf/push/ios/dev.p12',
         passphrase: '', 
-        bundleId: 'com.sinenco.sharednews',
+        bundleId: 'com.sinenco.smartherald',
         production: false
       }]
     },
@@ -66,7 +66,7 @@ app.use('/dashboard', express.static(path.join(__dirname, '/public/dashboard')))
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
-require("./jobs/main.js");
+//require("./jobs/main.js");
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app

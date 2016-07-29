@@ -30,7 +30,7 @@ use Parse\ParseObject;
 Class ParseStarter{
 
 	private $forever_uid;
-	const APPLICATION_ID="com.sinenco.sharednews";
+	const APPLICATION_ID="com.sinenco.smartherald";
 	const MASTER_KEY="themasterkey";
 	private $cloudFolder;
 
