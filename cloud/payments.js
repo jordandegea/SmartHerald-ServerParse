@@ -3,6 +3,76 @@ require('./function.add_messagesusers.js');
 require('./function.parse_str.js');
 require('./function.paypal.js');
 require('./function.send_email.js');
+require('./mail.template.creation.js');
+
+
+Parse.Cloud.define("creation_free_access", function(request, response) {
+
+  	Parse.Cloud.useMasterKey();
+
+	if (!request.user ||!request.params.packageName ){
+    	error_response(request,response, 002);
+	}
+	if (!request.params.access_code ){
+    	error_response(request,response, 003);
+	}
+
+	var access_code = request.params.access_code.toUpperCase();
+
+	var package = null ; 
+	var purchase = null ;
+	var price = null ; 
+	var purchase_params = {} ; 
+
+	var token = "";
+	var Package = Parse.Object.extend("Package");
+  	var Purchase = Parse.Object.extend("Purchase");
+  	var packageQuery = new Parse.Query(Package);
+  	packageQuery.equalTo('canonicalName', request.params.packageName);
+  	
+  	packageQuery.first(true).then(
+  		function(object){
+  			package = object;
+  			var params = package.get("params");
+  			var size = params.length;
+		   	for (var index = 0; index < size; ++index) {
+		   		if (!request.params[params[index]]){
+			    	error_response(request,response, 003);
+    				throw new Error();
+				}
+		   		purchase_params[params[index]] = request.params[params[index]];
+			}
+
+			if (!access_code.startsWith("FREECODE_")){
+				throw new Error("bad access code");
+			}
+
+			token = new Date().getTime().toString();
+			purchase = new Purchase();
+
+			purchase.set("user", request.user);
+			purchase.set("package", package);
+			purchase.set("paiement_method", "free access code");
+			purchase.set("token",token);
+			purchase.set("status", "pending");
+			purchase.set("message", access_code+"");
+			purchase.set("amount", 0);
+			purchase.set("params", purchase_params);
+			purchase.set("infos", "");
+
+			return purchase.save(true);
+  		}
+  	).then(
+  		function(){
+			response.success('{"token":"'+token+'"}');
+		},
+  		function(error){
+			error_response(request,response, 600, error);
+
+  		}
+  	);
+});
+
 
 Parse.Cloud.define("paypal_set_express_checkout", function(request, response) {
 
@@ -102,27 +172,33 @@ Parse.Cloud.define("paiement_check", function(request, response) {
     	error_response(request,response, 002);
   	}
 
+  	Parse.Cloud.useMasterKey();
+
   	var Purchase = Parse.Object.extend("Purchase");
   	var purchaseQuery = new Parse.Query(Purchase);
-  	purchaseQuery.equalTo('token', request.params.paiement_token);
+  	var paiement_token = request.params.paiement_token
+  	purchaseQuery.equalTo('token', paiement_token.toString());
   	purchaseQuery.include("package");
 
   	var purchase = null ; 
   	var package = null;
   	var payer_id = null; 
 
-	purchaseQuery.first().then(
+	purchaseQuery.first(true).then(
 		function(object) {
 	      purchase = object;
+
 	      package = purchase.get("package");
+
 	      var paiement_method = purchase.get("paiement_method");
+
 
 	      if (paiement_method == "paypal"){
 	      	return paypal_check_payment(false, purchase);
 	      }else if (paiement_method == "paypal_sandbox"){
   			return paypal_check_payment(true, purchase);
 	      }else if(paiement_method == "free"){
-
+		  	return ;
 	      }else{
 
 	      }
@@ -139,7 +215,10 @@ Parse.Cloud.define("paiement_check", function(request, response) {
 		        purchase.get("user"), 
 		        params["name"], 
 		        params["description"], 
-		        values["messagesusers"]);
+		        values["messagesusers"],
+		        params["website"],
+		        params["employees"], 
+		        params["clients"]);
 
 	      }else if(package.get("type") == "rent"){
 
@@ -149,14 +228,14 @@ Parse.Cloud.define("paiement_check", function(request, response) {
 			var service = new Service();
 			service.id = params["serviceId"];
   			return service.fetch(true).then(
-  					function(object){
-						return service.get("configuration").fetch();
-					}
-				).then(
-					function(object){
-						return add_messagesusers(object, values["messagesusers"]);
-					}
-				);
+				function(object){
+					return service.get("configuration").fetch();
+				}
+			).then(
+				function(object){
+					return add_messagesusers(object, values["messagesusers"]);
+				}
+			);
 	      }else{
 		      purchase.set("message","unknown type");
 	      }
@@ -170,10 +249,12 @@ Parse.Cloud.define("paiement_check", function(request, response) {
 	).then(
 		function(object){
 			success_response(request,response, 600);
+			send_email("Jordan DE GEA <admin@sinenco.com>", purchase.get("user").get("email"), "Smart Herald: account created", mail_template_creation(purchase.get("user"), params.name));
+			// Send email for subscription done
 		},
 		function(error){
 			error_response(request,response, 600, error);
-			send_email("Jordan DE GEA <admin@sinenco.com>", "Jordan DE GEA <admin@mgmail.com>", "Purchase error: "+purchase.get("token"), error.message);
+			send_email("Jordan DE GEA <admin@sinenco.com>", "Jordan DE GEA <admin@sinenco.com>", "Purchase error: "+purchase.get("token"), error.message);
 		}
 	)
 

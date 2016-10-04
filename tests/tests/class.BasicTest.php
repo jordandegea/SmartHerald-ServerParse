@@ -16,6 +16,17 @@ class BasicTest{
 			throw new Exception("Compare must not be equal", 1);
 		}
 	}
+	public static function mustContains($source, $string){
+		if (!strstr($source, $string)){
+			throw new Exception("must contains", 1);
+		}
+	}
+
+	public static function mustNotContains($source, $string){
+		if (strstr($source, $string)){
+			throw new Exception("must not contains", 1);
+		}
+	}
 
 
 }

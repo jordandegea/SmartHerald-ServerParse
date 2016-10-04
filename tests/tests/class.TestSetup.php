@@ -8,7 +8,7 @@ class TestSetup{
 
 	private static $users = array();
 	private static $services = array();
-
+	
 	public static function loadUsers($nb){
 		if ( count(self::$users) > 0 )
 			throw new Exception("Users already loaded", 1);
@@ -48,5 +48,6 @@ class TestSetup{
 		$service = new ParseObject("Service", $serviceId);
 		self::$services[] = $service;
 	}
+
 
 }

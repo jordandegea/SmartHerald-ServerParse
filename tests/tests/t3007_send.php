@@ -21,6 +21,7 @@ try{
 	ParseCloudTest::runMustSucceed('subscribe', ["serviceId" => TestSetup::getService(0)->getObjectId()], false);
 
 	$service = TestSetup::getService(0);
+	ParseObjectTest::fetchMustSucceed($service, true);
 
 	$result = ParseCloudTest::runMustSucceed(
 		'add_messagesusers', 
@@ -30,21 +31,14 @@ try{
 		], 
 		true);
 
-	$result = ParseCloudTest::runMustSucceed(
-		'write_message', 
-		[
-			"serviceId" => TestSetup::getService(0)->getObjectId(),
-			"summary" => "summary 1",
-			"content" => "content 1"
-		], 
-		false);
-	$resultJson = json_decode($result);
-	$messageId = $resultJson->messageId;
 
-	$message = new ParseObject("Message", $messageId);
-	ParseObjectTest::fetchMustSucceed($message, false);
+	$message = new ParseObject("Message");
+	$message->set("service", $service);
+	$message->set("summary", "summary 1");
+	$message->set("content", "content 1");
+	ParseObjectTest::saveMustSucceed($message, true);
+	ParseObjectTest::fetchMustSucceed($message, true);
 
-	ParseObjectTest::fetchMustSucceed($service, true);
 
 	$serviceConfiguration = $service->get("configuration");
 	ParseObjectTest::fetchMustSucceed($serviceConfiguration, true);
@@ -61,6 +55,10 @@ try{
 			"messageId" => $message->getObjectId()
 		], 
 		false);
+
+	ParseObjectTest::fetchMustSucceed($message, true);
+	BasicTest::compareMustBeEqual($message->get('sent'), true);
+
 
 	ParseObjectTest::fetchMustSucceed($serviceConfiguration, true);
 	BasicTest::compareMustBeEqual($serviceConfiguration->get('messagesUsers'), 98);

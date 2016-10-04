@@ -64,6 +64,5 @@ try{
 
 	UITest::display_result(true, "Add messagesUsers");
 }catch(Exception $e){
-	print_r($e);
 	UITest::display_result(false, "Add messagesUsers", $e);
 }

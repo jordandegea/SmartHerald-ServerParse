@@ -10,3 +10,4 @@ i: test interactif
  - 1XXX: PCL Security tests
  - 2XXX: ACL Security tests
  - 3XXX: Cloud Code tests
+ - 31XX: Message test

@@ -34,6 +34,5 @@ try{
 
 	UITest::display_result(true, "Update Subscriptions");
 }catch(Exception $e){
-	print_r($e);
 	UITest::display_result(false, "Update Subscriptions", $e);
 }

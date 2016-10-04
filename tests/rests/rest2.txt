@@ -1,3 +1,10 @@
+curl -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.smartherald" \
+  -H "X-Parse-Master-Key: themasterkey" \
+  -H "Content-Type: application/json" \
+  -d '{}' \
+  http://localhost:1337/parse/classes/MessageBuilder
+
 
 curl -X POST \
   -H "X-Parse-Application-Id: com.sinenco.smartherald" \
@@ -6,6 +13,11 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"username":"sinenco","password":"malville"}' \
   http://smartherald.com/parse/users
+
+curl -X GET \
+  -H "X-Parse-Application-Id: com.sinenco.smartherald" \
+  -H "X-Parse-REST-API-Key: VXjY3oIWK9VE5YnU3zzKVZ4GEDV9QYqPi7VFT3Ds" \
+  http://smartherald.com/parse/classes/Service
 
 curl -v -X POST \
   -H "X-Parse-Application-Id: com.sinenco.smartherald" \
@@ -50,3 +62,11 @@ curl -v -X POST \
   -d '{ "description":"salut", "serviceId":"NoYz6T8MUO"  }' \
   -H "X-Parse-Session-Token: r:93b72b8ec327fb110d5d0c27efcf1f13" \
   http://prod.smartherald.com/parse/functions/change_description
+
+
+curl -v -X POST \
+  -H "X-Parse-Application-Id: com.sinenco.smartherald" \
+  -H "X-Parse-Session-Token: r:d2f1b7a05336ca184a988627a8ac4fdb" \
+  -H "Content-Type: application/json" \
+  -d '{ "serviceId":"Id1cZREb55" }' \
+http://smartherald.com/parse/functions/subscribe

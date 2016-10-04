@@ -21,7 +21,7 @@ class ParseObjectTest{
 		}catch(Exception $e){
 			return true;
 		}
-		throw new Exception("Test succeed and must fail", 1, $e);
+		throw new Exception("Test succeed and must fail", 1);
 	}
 
 	public static function saveMustSucceed($object, $useMasterKey = false){
@@ -38,7 +38,7 @@ class ParseObjectTest{
 		}catch(Exception $e){
 			return true;
 		}
-		throw new Exception("Test succeed and must fail", 1, $e);
+		throw new Exception("Test succeed and must fail", 1);
 	}
 	
 }

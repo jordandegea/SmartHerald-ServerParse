@@ -5,13 +5,10 @@ require('./function.check_service_owner.js');
  * 
  * @param request.user
  * @param request.params.serviceId
- * @param request.params.summary
- * @param request.params.content
  */
-Parse.Cloud.define("write_message", function(request, response) {
+Parse.Cloud.define("create_message_builder", function(request, response) {
 
-	if (!request.user || !request.params.serviceId || 
-		!request.params.summary || ! request.params.content){
+	if (!request.user || !request.params.serviceId){
 	    error_response(request,response, 002);
 	    return ;
 	}
@@ -19,12 +16,9 @@ Parse.Cloud.define("write_message", function(request, response) {
   	Parse.Cloud.useMasterKey();
 
 	var user = request.user ; 
-	var content = request.params.content;
-	var summary = request.params.summary;
 
-  	var message=null;
+  	var messageBuilder=null;
   	var returns = {} ;
-
 	check_service_owner(returns, request.params.serviceId, user)
 	.then( /* Get ServiceConfiguration object */
 		function(object){
@@ -32,26 +26,39 @@ Parse.Cloud.define("write_message", function(request, response) {
 			/* Check expiration */
 			if (serviceConfiguration.get('messagesUsers') >= serviceConfiguration.get('subscriptions')){
 				/* Create Message with summary and content */
-				var Message = Parse.Object.extend("Message");
-			    message = new Message();
+				var MessageBuilder = Parse.Object.extend("MessageCreator");
+			    messageBuilder = new MessageBuilder();
+
 			    /* Create the service with the role as ACL*/
 			    var acl = new Parse.ACL();
 			    acl.setReadAccess(user, true);
+			    acl.setWriteAccess(user, true);
+			    
+			    messageBuilder.set("service", returns.service);
+			    messageBuilder.set("content", "");
+			    messageBuilder.set("summary", "");
+			    messageBuilder.set("base_css", "");
+			    messageBuilder.set("custom_css", "");
+			    messageBuilder.set("js_jquery", false);
+			    messageBuilder.set("js_jquery_v", "");
+			    messageBuilder.set("js_bootstrap", false);
+      			messageBuilder.set("ACL", acl);
 
-			    message.set("service", returns.service);
-			    message.set("content", content);
-			    message.set("summary", summary);
-			    message.set("sent", false);
-      			message.set("ACL", acl);
-
-			    return message.save(true);
+			    return messageBuilder.save(true);
 			}else{
   				error_response(request,response, 40, {message: "not enough messageUsers"});
 			}
+		},function(error) {
+      		console.log(error);
+	  		error_response(request,response, 42, error);
 		}
 	).then(
 		function(object){
       		response.success('{"messageId":"'+object.id+'"}');
+		},
+		function(error) {
+      		console.log(error);
+	  		error_response(request,response, 43, error);
 		}
 	).then(null, /* Catch error */
 		function(error) {

@@ -1,9 +1,12 @@
-create_service = function(user, name, description, messagesUsers){
+create_service = function(user, name, description, messagesUsers, website, employees, clients){
 
   if( typeof(name)=='undefined'){throw new Error("missing name");}
   if( typeof(description)=='undefined'){throw new Error("missing description");}
   if( typeof(messagesUsers)=='undefined'){throw new Error("missing messagesUsers");}
   if( typeof(messagesUsers)=='string'){messagesUsers = parseInt(messagesUsers, 10);}
+  if( typeof(website)=='undefined'){website="";}
+  if( typeof(employees)=='undefined'){employees="";}
+  if( typeof(clients)=='undefined'){clients="";}
   
   var service = null;
 
@@ -43,10 +46,12 @@ create_service = function(user, name, description, messagesUsers){
       /* Create the service with the role as ACL*/
 
       serviceConfiguration.set("messagesUsers", messagesUsers);
+      serviceConfiguration.set("website", website);
+      serviceConfiguration.set("employees", employees);
+      serviceConfiguration.set("clients", clients);
       serviceConfiguration.set("subscriptions", 0);
 
       var acl = new Parse.ACL();
-
 
         // For now we don't validate services inscription
       acl.setReadAccess(user, true);

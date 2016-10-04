@@ -72,6 +72,10 @@ Parse.Cloud.define("send", function(request, response) {
 			if (message.get("sent") == true){
     			throw new Error();
 			}
+
+			if (message.get("service").id != service.id){
+    			throw new Error("Not linked service");
+			}
   	
 			cloudAction = new CloudAction();
 		    cloudAction.set("status", "pending");
@@ -121,10 +125,20 @@ Parse.Cloud.define("send", function(request, response) {
 			  	}
 			}, { useMasterKey: true });
 		}
+	).then(
+		function(){
+			return;
+		},
+		function(error){
+			if (error.message != "Missing push configuration"){
+				throw error;
+			}
+		}
 	).then( /* Change state of message */
 		function() {
 		    var acl = new Parse.ACL();
 		    acl.setPublicReadAccess(true);
+			acl.setWriteAccess( user, true);
 
 		    message.set("sent", true);
   			message.set("ACL", acl);
@@ -151,11 +165,11 @@ Parse.Cloud.define("send", function(request, response) {
 	).then(null, /* Catch error */
 		function(error) {
       		console.log(error);
+	  		error_response(request,response, 410, error);
       		if (cloudAction != null){
 			    cloudAction.set("status", "KO");
 	            cloudAction.save(true);
 	        }
-	  		error_response(request,response, 410, error);
 		}
 	);
 });

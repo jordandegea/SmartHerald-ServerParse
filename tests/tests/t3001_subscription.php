@@ -17,7 +17,6 @@ try{
 	ParseCloudTest::runMustSucceed('subscribe', ["serviceId" => TestSetup::getService(0)->getObjectId()], false);
 	UITest::display_result(true, "Subscribe");
 }catch(Exception $e){
-	print_r($e);
 	UITest::display_result(false, "Subscribe", $e);
 }
 
@@ -57,7 +56,6 @@ try{
 	ParseCloudTest::runMustFail('subscribe', ["serviceId" => TestSetup::getService(0)->getObjectId()], true);
 	UITest::display_result(true, "Subscribe must fail with admin debug");
 }catch(Exception $e){
-	print_r($e);
 	UITest::display_result(false, "Subscribe must fail with admin debug", $e);
 }
 
