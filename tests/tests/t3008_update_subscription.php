@@ -28,7 +28,7 @@ try{
 		], 
 		false);
 	$resultJson = json_decode($result);
-	BasicTest::compareMustBeEqual($resultJson->count, 21);
+	BasicTest::compareMustBeEqual($resultJson->count, 10);
 
 
 

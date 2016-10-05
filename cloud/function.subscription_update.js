@@ -27,7 +27,8 @@ subscription_update = function(returns, serviceId, user){
       var Subscription = Parse.Object.extend("Subscription");
       var query = new Parse.Query(Subscription);
       query.equalTo("service", returns.service);
-      return query.find().then(
+      return query.find()
+      .then(
         function(results) {
           var promise = Parse.Promise.as();
           results.forEach(
@@ -38,12 +39,21 @@ subscription_update = function(returns, serviceId, user){
                   var userLoop = result.get('user');
                   var Session = Parse.Session;
                   var query = new Parse.Query(Session);
+                  query.descending("installationId");
                   query.equalTo("user", userLoop);
-                  return query.count();
-                }
-              ).then(
-                function(count){
-                  counter += count;
+                  var lastInstallationId = "0";
+                  return query.find().then(
+                      function(sessions){
+                      sessions.forEach(
+                        function(result, index) {
+                          if ( lastInstallationId != result.get("installationId")){
+                            counter++;
+                            lastInstallationId = result.get("installationId");
+                          }
+                        }
+                      );
+                    }
+                  );
                 }
               );
             }

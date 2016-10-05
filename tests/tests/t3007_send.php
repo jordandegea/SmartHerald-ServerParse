@@ -61,10 +61,9 @@ try{
 
 
 	ParseObjectTest::fetchMustSucceed($serviceConfiguration, true);
-	BasicTest::compareMustBeEqual($serviceConfiguration->get('messagesUsers'), 98);
+	BasicTest::compareMustBeEqual($serviceConfiguration->get('messagesUsers'), 99);
 
 	UITest::display_result(true, "Send");
 }catch(Exception $e){
-	print_r($e);
 	UITest::display_result(false, "Send", $e);
 }
